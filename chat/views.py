@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from .models import Chat, Message
+from django.contrib.auth.models import User
 
 @login_required(login_url='/login/')
 def index(request):
@@ -25,3 +26,13 @@ def login_view(request):
         else:
             return render(request, 'auth/login.html', {'wrongPassword': True, 'redirect': redirect})
     return render(request, 'auth/login.html', {'redirect': redirect})
+
+
+def register_view(request):
+    if request.method == 'POST':
+        print("received data " + request.POST['username'] + request.POST['password']+ request.POST['confirm_password'])
+        if request.POST['username'] and request.POST['password'] == request.POST['confirm_password']:
+            user = User.objects.create_user(username= request.POST['username'], password= request.POST['password'])
+        else: 
+            return render(request, 'auth/register.html', {'passwordNotIdent': True,})
+    return render(request, 'auth/register.html')

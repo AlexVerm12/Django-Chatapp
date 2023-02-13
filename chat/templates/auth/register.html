@@ -1,0 +1,27 @@
+{% extends "base.html" %} {% block content %}
+
+<h1>Register</h1>
+
+<form class="form-register" action="/register/" method="post">
+    {% csrf_token %}
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" name="username" id="sample3" />
+        <label class="mdl-textfield__label" for="sample3">Username...</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="password" name="password" id="sample3" />
+        <label class="mdl-textfield__label" for="sample3">Password...</label>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="password" name="confirm_password" id="sample3" />
+        <label class="mdl-textfield__label" for="sample3">Confirm password...</label>
+    </div>
+    {%if passwordNotIdent%}
+    <p>The password is not correct. Please try again.</p>
+    {%endif%}
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        Register
+    </button>
+</form>
+
+{% endblock %}

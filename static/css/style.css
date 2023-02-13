@@ -1,0 +1,22 @@
+.page-content {
+    padding: 100px 100px;
+}
+
+.text-grey {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.form-login {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-register {
+    display: flex;
+    flex-direction: column;
+}
+
+.mdl-button {
+    min-width: none;
+    width: fit-content;
+}

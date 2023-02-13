@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block content %}
+ {% extends "base.html" %} {% block content %}
 
 <h1>Login</h1>
 
@@ -6,16 +6,16 @@
 <p>Username or password is not correct!</p>
 {%endif%}
 
-<form action="/login/" method="POST">
+<form class="form-login" action="/login/" method="POST">
     {% csrf_token %}
     <input type="hidden" name="redirect" value="{{ redirect }}">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="text" name="username" id="sample3" />
-        <label class="mdl-textfield__label" for="sample3">Text...</label>
+        <input class="mdl-textfield__input" placeholder="Text..." type="text" name="username" id="sample3" />
+
     </div>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="password" name="password" id="sample3" />
-        <label class="mdl-textfield__label" for="sample3">Password...</label>
+        <input class="mdl-textfield__input" placeholder="Password..." type="password" name="password" id="sample3" />
+
     </div>
 
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
@@ -23,4 +23,6 @@
     </button>
 
 </form>
+
+<p>Not a user? Please sign up <a href="/register/"> here.</a></p>
 {% endblock %}
