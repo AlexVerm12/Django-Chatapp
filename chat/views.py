@@ -33,7 +33,7 @@ def register_view(request):
         print("received data " + request.POST['username'] + request.POST['password']+ request.POST['confirm_password'])
         if request.POST['username'] and request.POST['password'] == request.POST['confirm_password']:
             user = User.objects.create_user(username= request.POST['username'], password= request.POST['password'])
-            return HttpResponseRedirect('/login/')
+            return HttpResponseRedirect('/chat/')
         else: 
             return render(request, 'auth/register.html', {'passwordNotIdent': True,})
     return render(request, 'auth/register.html')

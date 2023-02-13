@@ -1,13 +1,32 @@
 {% extends "base.html" %} {% block content %} {%if request.user.is_authenticated%} {% for message in messages %}
+
+<script>
+    async function sendMessage() {
+        let fd = new FormData();
+        let token = '{{ csrf_token }}';
+        fd.append('textmessage', messageField.value);
+        fd.append("csrfmiddlewaretoken", token)
+        try {
+            await fetch('/chat/', {
+                method: 'POST',
+                body: fd
+            })
+            console.log('success');
+        } catch (e) {
+            console.error('an error occured', e)
+        }
+    }
+</script>
+
 <div>
     <span class="text-grey">[{{message.created_at}}]</span> {{message.author.first_name}}: {{message.text}}
 </div>
 {% endfor %}
-<form action="/chat/" method="post">
+<form onsubmit="sendMessage(); return false;" method="post">
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <input class="mdl-textfield__input" type="text" name="textmessage" id="sample3" />
-        <label class="mdl-textfield__label" for="sample3">Text...</label>
+        <input class="mdl-textfield__input" type="text" name="textmessage" id="messageField" />
+        <label class="mdl-textfield__label" for="messageField">Text...</label>
     </div>
 
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
