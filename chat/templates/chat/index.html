@@ -1,27 +1,41 @@
-{% extends "base.html" %} {% block content %} {%if request.user.is_authenticated%} {% for message in messages %}
+{% extends "base.html" %} {% block content %} {%if request.user.is_authenticated%}
 
 <script>
     async function sendMessage() {
         let fd = new FormData();
         let token = '{{ csrf_token }}';
+        let d = new Date().toISOString().split('T')[0].split('-');
         fd.append('textmessage', messageField.value);
-        fd.append("csrfmiddlewaretoken", token)
+        fd.append("csrfmiddlewaretoken", token);
         try {
+            messageContainer.innerHTML += `
+            <div id="deleteMessage">
+                <span class="text-grey">[${d[1]}/${d[2]}/${d[0]}] {{ request.user }}: </span> <i class="text-grey"> ${messageField.value}</i>
+            </div>
+            `;
             await fetch('/chat/', {
                 method: 'POST',
                 body: fd
             })
             console.log('success');
+            deleteMessage.remove();
+            messageContainer.innerHTML += `
+            <div id="deleteMessage">
+                <span class="text-grey">[${d[1]}/${d[2]}/${d[0]}] {{ request.user }}: </span> <i> ${messageField.value}</i>
+            </div>
+            `;
         } catch (e) {
             console.error('an error occured', e)
         }
     }
 </script>
-
-<div>
-    <span class="text-grey">[{{message.created_at}}]</span> {{message.author.first_name}}: {{message.text}}
+<div id="messageContainer">
+    {% for message in messages %}
+    <div>
+        <span class="text-grey">[{{message.created_at}}]</span> {{message.author.first_name}}: {{message.text}}
+    </div>
+    {% endfor %}
 </div>
-{% endfor %}
 <form onsubmit="sendMessage(); return false;" method="post">
     {% csrf_token %}
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
