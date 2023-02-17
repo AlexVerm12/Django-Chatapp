@@ -1,17 +1,20 @@
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from .models import Chat, Message
 from django.contrib.auth.models import User
+from django.core import serializers
 
 @login_required(login_url='/login/')
 def index(request):
     if request.method == 'POST':
         print("received data " + request.POST['textmessage'])
         myChat = Chat.objects.get(id=1)
-        Message.objects.create(text=request.POST['textmessage'], chat=myChat, author=request.user, receiver=request.user)
+        new_message = Message.objects.create(text=request.POST['textmessage'], chat=myChat, author=request.user, receiver=request.user)
+        serialized_object = serializers.serialize('json', [new_message, ])
+        return JsonResponse(serialized_object[1:-1], safe=False)
     chatMessages = Message.objects.filter(chat__id=1)
     return render(request, 'chat/index.html', {'messages':  chatMessages})
 

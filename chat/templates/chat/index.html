@@ -13,15 +13,17 @@
                 <span class="text-grey">[${d[1]}/${d[2]}/${d[0]}] {{ request.user }}: </span> <i class="text-grey"> ${messageField.value}</i>
             </div>
             `;
-            await fetch('/chat/', {
+            let response = await fetch('/chat/', {
                 method: 'POST',
                 body: fd
             })
-            console.log('success');
+            let json = await response.json();
+            let obj = JSON.parse(json);
+            console.log(obj);
             deleteMessage.remove();
             messageContainer.innerHTML += `
             <div id="deleteMessage">
-                <span class="text-grey">[${d[1]}/${d[2]}/${d[0]}] {{ request.user }}: </span> <i> ${messageField.value}</i>
+                <span class="text-grey">[${obj.fields.created_at}] {{ request.user }}: </span> <i> ${messageField.value}</i>
             </div>
             `;
         } catch (e) {
